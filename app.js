@@ -4,10 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
-
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
-
 const Dishes = require('./models/dishes');
 
 const url = 'mongodb+srv://ruanvg:ESCOLA01@cluster0.rnxg0ym.mongodb.net/?retryWrites=true&w=majority';
@@ -21,7 +19,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
 var leaderRouter = require('./routes/leaderRouter');
-var promoRouter = require('./routes/promoRouter')
+var promoRouter = require('./routes/promoRouter');
 
 var app = express();
 
