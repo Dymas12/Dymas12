@@ -15,14 +15,13 @@ var commentSchema = new Schema({
         type: String,
         required: true
     },
-    author:  {
-        type: String,
-        required: true
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     timestamps: true
 });
-
 var dishSchema = new Schema({
     name: {
         type: String,
