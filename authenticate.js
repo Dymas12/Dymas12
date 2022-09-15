@@ -6,12 +6,9 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config.js');
 
-
-
-passport.use(new LocalStrategy(User.authenticate()));
+exports.local = passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 exports.getToken = function(user) {
     return jwt.sign(user, config.secretKey,
@@ -41,6 +38,14 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
 exports.verifyUser = passport.authenticate('jwt', {session: false});
 
 
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+exports.verifyAdmin = function (req, res, next){
+    console.log(req.user.admin)
+    if(req.user.admin){
+        next();
+    }else{
+        var err = new Error('You do not have permission to access this route');
+        err.status = 403;
+        return next(err);
+    }
+};
+
