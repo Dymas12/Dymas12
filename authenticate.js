@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config.js');
 
 
-exports.getToken = function(user) {
+exports.getToken = (user) => {
     return jwt.sign(user, config.secretKey,
         {expiresIn: 3600});
 };
@@ -35,7 +35,7 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
 exports.verifyUser = passport.authenticate('jwt', {session: false});
 
 
-exports.verifyAdmin = function (req, res, next){
+exports.verifyAdmin = (req, res, next) => {
     console.log(req.user.admin)
     if(req.user.admin){
         next();
