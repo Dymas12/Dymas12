@@ -26,13 +26,18 @@ dishRouter
   })
 
   .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    Dishes.create(req.body).then((dish) => {
-        res.statusCode = 201;
-        res.setHeader("Content-Type", "application/json");
-        res.json(dish);
-        console.log("Dish Created");
-    }, (err) => next(err)).catch((err) => next(err));
-})
+    Dishes.create(req.body)
+      .then(
+        (dish) => {
+          res.statusCode = 201;
+          res.setHeader("Content-Type", "application/json");
+          res.json(dish);
+          console.log("Dish Created");
+        },
+        (err) => next(err)
+      )
+      .catch((err) => next(err));
+  })
   .put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     res.statusCode = 403;
     res.end("PUT operation is not supported on /dishes");
@@ -246,13 +251,15 @@ dishRouter
   })
 
   .put(authenticate.verifyUser, (req, res, next) => {
-    console.log(typeof req.user._id)
-    console.log(typeof req.params.commentId)
+    console.log(typeof req.user._id);
+    console.log(typeof req.params.commentId);
     Dishes.findById(req.params.dishId)
       .then(
         (dish) => {
-          const authorComment =  dish.comments.id(req.params.commentId).author.toString()
-          const userId = req.user._id.toString()
+          const authorComment = dish.comments
+            .id(req.params.commentId)
+            .author.toString();
+          const userId = req.user._id.toString();
           if (dish != null && dish.comments.id(req.params.commentId)) {
             if (userId != authorComment) {
               err = new Error("You are not authorized to edit this comment");
@@ -294,14 +301,18 @@ dishRouter
 
   .delete(authenticate.verifyUser, (req, res, next) => {
     Dishes.findById(req.params.dishId)
-       .then(
+      .then(
         (dish) => {
-        const authorComment =  dish.comments.id(req.params.commentId).author.toString()
-        const userId = req.user._id.toString()
+          const authorComment = dish.comments
+            .id(req.params.commentId)
+            .author.toString();
+          const userId = req.user._id.toString();
           if (dish != null && dish.comments.id(req.params.commentId)) {
-            if (
-              authorComment != userId) {
-                console.log(dish.comments.id(req.params.commentId).author,"author")
+            if (authorComment != userId) {
+              console.log(
+                dish.comments.id(req.params.commentId).author,
+                "author"
+              );
               err = new Error("You are not authorized to edit this comment");
               err.status = 403;
               return next(err);
