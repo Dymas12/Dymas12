@@ -12,6 +12,7 @@ promotionRouter.use(bodyParser.json());
 
 promotionRouter
   .route("/")
+  
   .get(cors.cors,(req, res, next) => {
     Promotions.find({})
       .then(
